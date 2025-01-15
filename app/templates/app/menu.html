@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Menu - Restoran
+{% endblock %}
+
+{% block content %}
+<!-- Navbar & Hero Start -->
+<div class="container-xxl position-relative p-0">
+    <div class="container-xxl py-5 bg-dark hero-header mb-5">
+        <div class="container text-center my-5 pt-5 pb-4">
+            <h1 class="display-3 text-white mb-3 animated slideInDown">Food Menu</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center text-uppercase">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item text-white active" aria-current="page">Menu</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Navbar & Hero End -->
+
+<!-- Menu Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Food Menu</h5>
+            <h1 class="mb-5">Most Popular Items</h1>
+        </div>
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#tab-main">
+                        <i class="fa fa-utensils fa-2x text-primary"></i>
+                        <div class="ps-3">
+                            <small class="text-body">Category</small>
+                            <h6 class="mt-n1 mb-0">Main</h6>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-drink">
+                        <i class="fa fa-coffee fa-2x text-primary"></i>
+                        <div class="ps-3">
+                            <small class="text-body">Category</small>
+                            <h6 class="mt-n1 mb-0">Drink</h6>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-dessert">
+                        <i class="fa fa-ice-cream fa-2x text-primary"></i>
+                        <div class="ps-3">
+                            <small class="text-body">Category</small>
+                            <h6 class="mt-n1 mb-0">Dessert</h6>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <!-- Main -->
+                <div id="tab-main" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        {% for item in main_page_obj %}
+                        <div class="col-lg-6">
+                            <div class="d-flex align-items-center">
+                                <img class="flex-shrink-0 img-fluid rounded" src="{{ item.image_url }}" alt="{{ item.name }}" style="width: 80px; height: 80px;">
+                                <div class="w-100 d-flex flex-column text-start ps-4">
+                                    <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                        <span>{{ item.name }}</span>
+                                        <span class="text-primary">{{ item.price }} VND</span>
+                                    </h5>
+                                    <small class="fst-italic">{{ item.description }}</small>
+                                    <a href="{% url 'add_to_cart' item.id %}" class="btn btn-primary mt-2">Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="pagination">
+                        {% if main_page_obj.has_previous %}
+                        <a href="?main_page={{ main_page_obj.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        <span>Page {{ main_page_obj.number }} of {{ main_page_obj.paginator.num_pages }}</span>
+                        {% if main_page_obj.has_next %}
+                        <a href="?main_page={{ main_page_obj.next_page_number }}">Next</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Drink -->
+                <div id="tab-drink" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        {% for item in drink_page_obj %}
+                        <div class="col-lg-6">
+                            <div class="d-flex align-items-center">
+                                <img class="flex-shrink-0 img-fluid rounded" src="{{ item.image_url }}" alt="{{ item.name }}" style="width: 80px; height: 80px;">
+                                <div class="w-100 d-flex flex-column text-start ps-4">
+                                    <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                        <span>{{ item.name }}</span>
+                                        <span class="text-primary">{{ item.price }} VND</span>
+                                    </h5>
+                                    <small class="fst-italic">{{ item.description }}</small>
+                                    <a href="{% url 'add_to_cart' item.id %}" class="btn btn-primary mt-2">Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="pagination">
+                        {% if drink_page_obj.has_previous %}
+                        <a href="?drink_page={{ drink_page_obj.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        <span>Page {{ drink_page_obj.number }} of {{ drink_page_obj.paginator.num_pages }}</span>
+                        {% if drink_page_obj.has_next %}
+                        <a href="?drink_page={{ drink_page_obj.next_page_number }}">Next</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Dessert -->
+                <div id="tab-dessert" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        {% for item in dessert_page_obj %}
+                        <div class="col-lg-6">
+                            <div class="d-flex align-items-center">
+                                <img class="flex-shrink-0 img-fluid rounded" src="{{ item.image_url }}" alt="{{ item.name }}" style="width: 80px; height: 80px;">
+                                <div class="w-100 d-flex flex-column text-start ps-4">
+                                    <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                        <span>{{ item.name }}</span>
+                                        <span class="text-primary">{{ item.price }} VND</span>
+                                    </h5>
+                                    <small class="fst-italic">{{ item.description }}</small>
+                                    <a href="{% url 'add_to_cart' item.id %}" class="btn btn-primary mt-2">Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="pagination">
+                        {% if dessert_page_obj.has_previous %}
+                        <a href="?dessert_page={{ dessert_page_obj.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        <span>Page {{ dessert_page_obj.number }} of {{ dessert_page_obj.paginator.num_pages }}</span>
+                        {% if dessert_page_obj.has_next %}
+                        <a href="?dessert_page={{ dessert_page_obj.next_page_number }}">Next</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Menu End -->
+{% endblock %}
