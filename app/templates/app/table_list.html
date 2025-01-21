@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}
+Danh sách Bàn - Restoran
+{% endblock %}
+{% load static %}
+{% block content %}
+<!-- Navbar & Hero Start -->
+<div class="container-xxl position-relative p-0">
+    <div class="container-xxl py-5 bg-dark hero-header mb-5">
+        <div class="container text-center my-5 pt-5 pb-4">
+            <h1 class="display-3 text-white mb-3 animated slideInDown">Danh sách Bàn</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center text-uppercase">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item text-white active" aria-current="page">Tables</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Navbar & Hero End -->
+
+<!-- Table List Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Danh sách Bàn</h5>
+            <h1 class="mb-5">Thông tin bàn có sẵn</h1>
+        </div>
+        <div class="row g-4">
+            {% for table in tables %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="card-body">
+                        <h5 class="card-title">Bàn {{ table.table_number }}</h5>
+                        <p class="card-text">Sức chứa: {{ table.capacity }} người</p>
+                        <p class="card-text">Vị trí: {{ table.location }}</p>
+                        <p class="card-text">
+                            Trạng thái:
+                            <span
+                                class="badge {% if table.reservation_status == 'Available' %}bg-success{% else %}bg-danger{% endif %}">
+                                {{ table.get_reservation_status_display }}
+                            </span>
+                        </p>
+                        {% if table.reservation_status == 'Available' %}
+                        <a href="{% url 'reserve_table' table.id %}" class="btn btn-primary">Đặt bàn</a>
+                        {% else %}
+                        <button class="btn btn-secondary" disabled>Bàn đã được đặt</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center">Không có bàn nào hiển thị.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- Table List End -->
+{% endblock %}
